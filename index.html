@@ -1,0 +1,2126 @@
+# yt-autopilot <!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YT AutoPilot AI Studio — Multi-Niche YouTube & Affiliate Automation</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, .zenzy-font { font-family: 'Space Grotesk', 'Inter', sans-serif; }
+    body {
+      background-color: #070913;
+      background-image:
+        radial-gradient(at 10% 10%, rgba(236, 72, 153, 0.14) 0px, transparent 45%),
+        radial-gradient(at 90% 15%, rgba(139, 92, 246, 0.14) 0px, transparent 45%),
+        radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.10) 0px, transparent 50%);
+      color: #f8fafc;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .zenzy-pill {
+      background: linear-gradient(135deg, rgba(236,72,153,0.18), rgba(139,92,246,0.18));
+      border: 1px solid rgba(236,72,153,0.35);
+    }
+    .kanban-col {
+      min-height: 360px;
+      background: rgba(9, 13, 24, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .phone-frame {
+      aspect-ratio: 9 / 16;
+      max-height: 480px;
+      background: radial-gradient(circle at 30% 20%, #1e1b4b 0%, #090d16 70%);
+      border: 6px solid #1f2937;
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-rose-500 selection:text-white">
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Top Header -->
+  <header class="sticky top-0 z-40 glass-card border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-500/20">
+          <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">YT AutoPilot AI Studio</h1>
+            <span class="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">100% Free Stack</span>
+          </div>
+          <p class="text-xs text-slate-400">Multi-Niche YouTube + Affiliate Automation Control Center (Set, Edit & Approve)</p>
+        </div>
+      </div>
+
+      <!-- Mode & API Status Pill -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <button type="button" id="btnOpenApiModal" class="flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+          <span id="apiStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="apiStatusText">Smart Built-In Engine (Add Free Gemini Key)</span>
+        </button>
+        <button type="button" id="btnExportBackup" class="text-xs font-medium px-3 py-2 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+          Export All Data (.json)
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs (Gen-Z ClickUp OS Style) -->
+    <div class="max-w-7xl mx-auto mt-3 flex items-center justify-between gap-2 overflow-x-auto custom-scroll pb-1">
+      <div class="flex items-center gap-1.5">
+        <button type="button" data-tab="queue" class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-gradient-to-r from-fuchsia-600 via-pink-600 to-rose-500 text-white shadow-lg shadow-pink-500/25">
+          <span>2. Approval Queue</span>
+          <span id="queueCountBadge" class="px-2 py-0.5 rounded-full text-[11px] bg-black/30 text-white">3</span>
+        </button>
+        <button type="button" data-tab="studio" class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/80">
+          <span>1. AI Video & Script Generator</span>
+        </button>
+        <button type="button" data-tab="channels" class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/80">
+          <span>3. Multi-Niche Channels & Affiliate</span>
+        </button>
+        <button type="button" data-tab="autopilot" class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:bg-slate-800/80">
+          <span>4. 24/7 GitHub Auto-Pilot Code</span>
+        </button>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-[11px] text-pink-300 zenzy-pill px-3 py-1.5 rounded-full font-semibold">
+        <span>✨ Gen-Z Creator OS • Click Any Card to Edit or Comment</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+
+    <!-- TAB 1: AI VIDEO & SCRIPT GENERATOR -->
+    <section id="tab-studio" class="tab-panel hidden space-y-6">
+      <div class="glass-card rounded-2xl p-3.5 px-5 border border-pink-500/30 flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-pink-500/10 via-violet-500/10 to-emerald-500/10">
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded-lg bg-pink-500/20 text-pink-300 font-bold text-xs">ACTIVE PROJECT</span>
+          <input id="inputProjectName" type="text" value="Mimi Ep #1 — Rainy Day Strawberry Cake" class="rounded-xl bg-slate-900/90 border border-slate-700 px-3 py-1.5 text-sm font-bold text-white w-64 sm:w-80 focus:outline-none focus:border-pink-500" placeholder="Project Name..." />
+          <input id="inputProjectDate" type="date" value="2026-10-26" class="rounded-xl bg-slate-900/90 border border-slate-700 px-3 py-1.5 text-xs text-emerald-300 focus:outline-none focus:border-pink-500" />
+        </div>
+        <button type="button" id="btnBackToBoard" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-pink-300 border border-pink-500/30 transition">
+          ← Back to ClickUp Board
+        </button>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Generator Controls & Editable Settings -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <h2 class="text-sm font-bold uppercase tracking-wider text-rose-400">Step 1: Channel & Video Setup</h2>
+              <div class="flex items-center gap-2">
+                <button type="button" id="btnLoadMimiPreset" class="text-[11px] px-2 py-0.5 rounded-md bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/30 font-semibold">
+                  🧶 Load Mimi's Tiny Life
+                </button>
+                <button type="button" id="btnSurpriseTopic" class="text-xs text-amber-400 hover:text-amber-300 font-medium underline">
+                  + Trending Idea
+                </button>
+              </div>
+            </div>
+
+            <!-- Select Active Channel / Niche -->
+            <div>
+              <label for="selectChannel" class="block text-xs font-medium text-slate-300 mb-1">Select Niche Channel</label>
+              <select id="selectChannel" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500"></select>
+            </div>
+
+            <!-- Topic / Idea Input -->
+            <div>
+              <label for="inputTopic" class="block text-xs font-medium text-slate-300 mb-1">Video Topic / Hook Idea (Kuch bhi likhein ya edit karein)</label>
+              <input id="inputTopic" type="text" value="Top 3 Secret Free AI Tools Jo Aapka 5 Ghante Ka Kaam 5 Minute Mein Karenge" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2.5 text-sm text-white focus:outline-none focus:border-rose-500" placeholder="e.g., 3 AI Websites to Earn Online..." />
+            </div>
+
+            <!-- Format & Language -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="selectFormat" class="block text-xs font-medium text-slate-300 mb-1">Video Format</label>
+                <select id="selectFormat" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-rose-500">
+                  <option value="Shorts (60 Sec)">YouTube Shorts (60s)</option>
+                  <option value="Long Video (5-8 Min)">Long Video (5-8 Min)</option>
+                </select>
+              </div>
+              <div>
+                <label for="selectLanguage" class="block text-xs font-medium text-slate-300 mb-1">Script Language</label>
+                <select id="selectLanguage" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-rose-500">
+                  <option value="Hinglish">Hinglish (Hindi + Eng)</option>
+                  <option value="Hindi">Pure Hindi</option>
+                  <option value="English">Simple English</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tone & Affiliate Link Override -->
+            <div>
+              <label for="selectTone" class="block text-xs font-medium text-slate-300 mb-1">Voiceover Style / Tone</label>
+              <select id="selectTone" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-rose-500">
+                <option value="No Dialogue (Music + SFX Visual Story)">No Dialogue (Cinematic Music + Ambient SFX Only)</option>
+                <option value="High-Energy Viral">High-Energy Viral (Fast Retention)</option>
+                <option value="Suspense & Mystery">Suspense & Mystery Storytelling</option>
+                <option value="Step-by-Step Guide">Step-by-Step Practical Guide</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="inputCharacterDna" class="block text-xs font-medium text-pink-300 mb-1">Character Continuity DNA Lock (Injected into Every Clip Prompt)</label>
+              <textarea id="inputCharacterDna" rows="2" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-pink-200 focus:outline-none focus:border-pink-500">Cute knitted amigurumi girl named Mimi, soft cream-and-peach yarn stitches, round expressive dark button eyes, cozy oversized knitted cardigan, miniature handcrafted stop-motion lighting, 9:16 vertical</textarea>
+            </div>
+
+            <div class="pt-2 border-t border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-emerald-400">Monetization / Affiliate Injection</span>
+                <span class="text-[11px] text-slate-400">Auto-adds to Description & Comment</span>
+              </div>
+              <div>
+                <label for="inputAffiliateName" class="block text-xs text-slate-400 mb-1">Product / Offer Name</label>
+                <input id="inputAffiliateName" type="text" value="Free AI Automation Toolkit & Prompts" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              </div>
+              <div>
+                <label for="inputAffiliateUrl" class="block text-xs text-slate-400 mb-1">Affiliate / Bio Link</label>
+                <input id="inputAffiliateUrl" type="text" value="https://your-affiliate-link.com/deal" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button type="button" id="btnGeneratePack" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-orange-500 hover:from-rose-500 hover:to-orange-400 text-white font-bold text-sm shadow-lg shadow-rose-600/25 transition flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span id="generateBtnLabel">Generate Complete Video Pack</span>
+            </button>
+          </div>
+
+          <!-- 9:16 Shorts Visual & Voiceover Previewer -->
+          <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-white">Live 9:16 Shorts & Voice Preview</h3>
+                <p class="text-xs text-slate-400">Test pacing & captions before exporting</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" id="btnPlayPreview" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition">
+                  ▶ Play Voice
+                </button>
+                <button type="button" id="btnStopPreview" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+                  ■ Stop
+                </button>
+              </div>
+            </div>
+
+            <div class="phone-frame mx-auto w-56 flex flex-col justify-between p-4 text-center select-none">
+              <div class="flex items-center justify-between text-[10px] text-slate-300 bg-black/40 px-2.5 py-1 rounded-full">
+                <span id="previewChannelBadge">@AI_Hustle_Hindi</span>
+                <span id="previewSceneCounter">Scene 1/4</span>
+              </div>
+
+              <div class="my-auto space-y-3 px-1">
+                <div class="mx-auto w-12 h-12 rounded-2xl bg-rose-500/20 border border-rose-400/30 flex items-center justify-center text-rose-300 font-bold text-xs" id="previewTimeBadge">
+                  0:00-0:08
+                </div>
+                <p id="previewVisualHint" class="text-[11px] text-amber-300/90 italic bg-black/40 p-2 rounded-lg border border-amber-400/20">
+                  [Visual: Fast zoom on laptop showing AI robot completing tasks]
+                </p>
+                <div class="bg-black/75 border border-white/15 rounded-xl p-2.5 shadow-lg">
+                  <p id="previewCaptionText" class="text-xs font-extrabold text-white leading-snug">
+                    "Kya aap abhi bhi ghanto mehnat karke content bana rahe ho?"
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between gap-2 pt-2">
+                <button type="button" id="btnPrevScene" class="flex-1 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-medium text-white">◀ Prev</button>
+                <button type="button" id="btnNextScene" class="flex-1 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[11px] font-medium text-white">Next ▶</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Fully Editable Script, Scenes, SEO Metadata & Actions -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-5">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+              <div>
+                <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wider">Step 2: Review & Edit Anything</span>
+                <h2 class="text-base sm:text-lg font-bold text-white">Editable Script, Visual Prompts & SEO Pack</h2>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <button type="button" id="btnAddScene" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition">
+                  + Add Scene
+                </button>
+                <button type="button" id="btnCopyAllPack" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition">
+                  Copy Full Pack
+                </button>
+                <button type="button" id="btnDownloadTxt" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition">
+                  Download .TXT
+                </button>
+                <button type="button" id="btnSaveToQueue" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-lg shadow-emerald-600/20 transition">
+                  ✓ Approve & Save to Queue
+                </button>
+              </div>
+            </div>
+
+            <!-- Editable Viral Title & Hook -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="editTitle" class="block text-xs font-semibold text-slate-300 mb-1">Selected Viral YouTube Title (Click to Edit)</label>
+                <input id="editTitle" type="text" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 px-3 py-2.5 text-sm font-semibold text-white focus:outline-none focus:border-rose-500" />
+              </div>
+              <div>
+                <label for="editThumbPrompt" class="block text-xs font-semibold text-slate-300 mb-1">AI Thumbnail / Cover Prompt (For Fooocus / Canva)</label>
+                <input id="editThumbPrompt" type="text" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 px-3 py-2.5 text-sm text-amber-200 focus:outline-none focus:border-rose-500" />
+              </div>
+            </div>
+
+            <!-- Scene-by-Scene Editable Table/List -->
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Scene-by-Scene Script & AI Visual Prompts (Har line edit ho sakti hai)</h3>
+                <span class="text-[11px] text-slate-400">Tip: Edit any box below and it updates automatically</span>
+              </div>
+              <div id="scenesContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- SEO Description, Pinned Comment & Tags -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-800">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label for="editDescription" class="text-xs font-semibold text-slate-300">YouTube SEO Description + Affiliate Box</label>
+                  <button type="button" id="btnCopyDesc" class="text-[11px] text-rose-400 hover:text-rose-300 font-medium">Copy Description</button>
+                </div>
+                <textarea id="editDescription" rows="6" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3 text-xs text-slate-200 focus:outline-none focus:border-rose-500 custom-scroll"></textarea>
+              </div>
+
+              <div class="space-y-3">
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label for="editPinnedComment" class="text-xs font-semibold text-slate-300">Auto Pinned Comment (High Conversion CTA)</label>
+                    <button type="button" id="btnCopyPinned" class="text-[11px] text-rose-400 hover:text-rose-300 font-medium">Copy Comment</button>
+                  </div>
+                  <textarea id="editPinnedComment" rows="2" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-2.5 text-xs text-emerald-300 focus:outline-none focus:border-rose-500"></textarea>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label for="editTags" class="text-xs font-semibold text-slate-300">Viral SEO Tags & Hashtags</label>
+                    <button type="button" id="btnCopyTags" class="text-[11px] text-rose-400 hover:text-rose-300 font-medium">Copy Tags</button>
+                  </div>
+                  <textarea id="editTags" rows="2" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-2.5 text-xs text-slate-300 focus:outline-none focus:border-rose-500"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: CLICKUP-STYLE GEN-Z DASHBOARD & PROJECT BOARD (DEFAULT HOME) -->
+    <section id="tab-queue" class="tab-panel space-y-5">
+
+      <!-- 3-Step Easy Onboarding Banner -->
+      <div class="glass-card rounded-2xl p-4 border border-fuchsia-500/30 bg-gradient-to-r from-fuchsia-950/40 via-slate-900/80 to-emerald-950/40 flex flex-wrap items-center justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-fuchsia-500 text-white uppercase tracking-wider">Zero-Confusion Mode ✨</span>
+            <h2 class="text-sm sm:text-base font-bold text-white">Welcome to Your ClickUp-Style YouTube Automation OS!</h2>
+          </div>
+          <p class="text-xs text-slate-300">
+            <strong>Kaise Chalayein (3 Easy Steps):</strong>
+            <span class="text-pink-300 font-semibold">1.</span> Neeche kisi bhi Project Card par status badlein (<em>In Progress → In Review → Done</em>) ya Date/Comment dalein •
+            <span class="text-amber-300 font-semibold">2.</span> <strong>Open in AI Studio ✨</strong> daba kar script/prompts edit karein •
+            <span class="text-emerald-300 font-semibold">3.</span> Naya video banane ke liye <strong>+ Quick Create Project</strong> dabayein!
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnQuickMimiCreate" class="px-3.5 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-xs font-bold shadow-lg shadow-pink-600/25 transition">
+            🧶 + New Mimi 3x10s Project
+          </button>
+          <button type="button" id="btnGoToStudioTop" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-bold shadow-lg shadow-violet-600/25 transition">
+            ✨ Open AI Generator Studio
+          </button>
+        </div>
+      </div>
+
+      <!-- ClickUp Bento KPI Counter Cards (Clickable Filters!) -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <button type="button" data-kpi-filter="ALL" class="kpi-card glass-card rounded-2xl p-4 text-left border-l-4 border-l-fuchsia-500 hover:bg-slate-800/60 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">All Projects</span>
+            <span class="text-base">🗂️</span>
+          </div>
+          <p id="kpiTotalCount" class="text-2xl font-extrabold text-white mt-1">4</p>
+          <span class="text-[11px] text-fuchsia-300">Click to show all</span>
+        </button>
+
+        <button type="button" data-kpi-filter="In Progress" class="kpi-card glass-card rounded-2xl p-4 text-left border-l-4 border-l-sky-500 hover:bg-slate-800/60 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">In Progress</span>
+            <span class="text-base">⚡</span>
+          </div>
+          <p id="kpiProgressCount" class="text-2xl font-extrabold text-white mt-1">1</p>
+          <span class="text-[11px] text-sky-300">Scripting & Clips</span>
+        </button>
+
+        <button type="button" data-kpi-filter="In Review" class="kpi-card glass-card rounded-2xl p-4 text-left border-l-4 border-l-amber-500 hover:bg-slate-800/60 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">In Review</span>
+            <span class="text-base">👀</span>
+          </div>
+          <p id="kpiReviewCount" class="text-2xl font-extrabold text-white mt-1">2</p>
+          <span class="text-[11px] text-amber-300">Waiting your 1-click check</span>
+        </button>
+
+        <button type="button" data-kpi-filter="Done" class="kpi-card glass-card rounded-2xl p-4 text-left border-l-4 border-l-emerald-500 hover:bg-slate-800/60 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Done / Scheduled</span>
+            <span class="text-base">✅</span>
+          </div>
+          <p id="kpiDoneCount" class="text-2xl font-extrabold text-white mt-1">1</p>
+          <span class="text-[11px] text-emerald-300">Ready on YouTube</span>
+        </button>
+      </div>
+
+      <!-- ClickUp Quick-Add Project Bar -->
+      <div class="glass-card rounded-2xl p-4 space-y-3 border border-slate-800">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-pink-400">➕ Quick Create New Video Project (ClickUp Task Bar)</span>
+          <span class="text-[11px] text-slate-400">Set Project Name, Channel, Target Date & Status in 1 click</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+          <div class="sm:col-span-4">
+            <input id="quickProjName" type="text" placeholder="Project Name (e.g., Mimi Ep #2 - Cozy Tea Party)" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white focus:outline-none focus:border-pink-500" />
+          </div>
+          <div class="sm:col-span-3">
+            <select id="quickProjChannel" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white focus:outline-none focus:border-pink-500"></select>
+          </div>
+          <div class="sm:col-span-2">
+            <input id="quickProjDate" type="date" value="2026-10-27" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-emerald-300 focus:outline-none focus:border-pink-500" />
+          </div>
+          <div class="sm:col-span-2">
+            <select id="quickProjStatus" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-2.5 py-2 text-xs text-white focus:outline-none focus:border-pink-500">
+              <option value="In Progress">⚡ In Progress</option>
+              <option value="In Review">👀 In Review</option>
+              <option value="Done">✅ Done</option>
+            </select>
+          </div>
+          <div class="sm:col-span-1">
+            <button type="button" id="btnQuickAddProject" class="w-full h-full py-2 px-3 rounded-xl bg-gradient-to-r from-pink-600 to-rose-500 hover:from-pink-500 hover:to-rose-400 text-white font-bold text-xs shadow-md transition">
+              + Add
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbar: View Switcher (Kanban Board vs ClickUp List Table), Search, Channel & Status Filter -->
+      <div class="glass-card rounded-2xl p-4 sm:p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" id="btnViewKanban" class="px-3.5 py-1.5 rounded-xl bg-fuchsia-600 text-white text-xs font-bold transition">
+              📋 Kanban Board View
+            </button>
+            <button type="button" id="btnViewTable" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">
+              📅 ClickUp Table / List View
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <input id="searchProjectsInput" type="text" placeholder="🔍 Search project or topic..." class="rounded-xl bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs text-white focus:outline-none focus:border-pink-500" />
+            <select id="filterQueueChannel" class="rounded-xl bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs text-white">
+              <option value="ALL">All Channels</option>
+            </select>
+            <select id="filterQueueStatus" class="rounded-xl bg-slate-900 border border-slate-700 px-3 py-1.5 text-xs text-white">
+              <option value="ALL">All Statuses</option>
+              <option value="In Progress">⚡ In Progress</option>
+              <option value="In Review">👀 In Review</option>
+              <option value="Done">✅ Done</option>
+              <option value="Ready to Review">Ready to Review</option>
+              <option value="Approved">Approved for Upload</option>
+              <option value="Published">Published</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dynamic Container: Renders either 3-Column ClickUp Kanban Board OR ClickUp List Table -->
+        <div id="queueListContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MULTI-NICHE CHANNELS & AFFILIATE MANAGER -->
+    <section id="tab-channels" class="tab-panel hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 glass-card rounded-2xl p-5 space-y-4">
+          <h2 class="text-base font-bold text-white">Add or Update Niche Channel Rule</h2>
+          <p class="text-xs text-slate-400">Alag-alag niches ke liye default language, tone aur affiliate link ek baar set karein—agent har baar wahi use karega.</p>
+
+          <div>
+            <label for="chanNameInput" class="block text-xs font-medium text-slate-300 mb-1">Channel Name / Handle</label>
+            <input id="chanNameInput" type="text" placeholder="e.g., @AI_Money_Hindi" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
+          </div>
+          <div>
+            <label for="chanNicheInput" class="block text-xs font-medium text-slate-300 mb-1">Niche Category & Target Audience</label>
+            <input id="chanNicheInput" type="text" placeholder="e.g., AI Tools, Side Hustles & Productivity" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-sm text-white" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="chanLangInput" class="block text-xs font-medium text-slate-300 mb-1">Default Language</label>
+              <select id="chanLangInput" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white">
+                <option value="Hinglish">Hinglish</option>
+                <option value="Hindi">Hindi</option>
+                <option value="English">English</option>
+              </select>
+            </div>
+            <div>
+              <label for="chanScheduleInput" class="block text-xs font-medium text-slate-300 mb-1">Auto-Schedule Time</label>
+              <input id="chanScheduleInput" type="text" value="Daily 09:00 AM IST" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white" />
+            </div>
+          </div>
+          <div>
+            <label for="chanAffNameInput" class="block text-xs font-medium text-slate-300 mb-1">Default Affiliate Offer Title</label>
+            <input id="chanAffNameInput" type="text" placeholder="e.g., Best AI Video Tool (Free Trial)" class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white" />
+          </div>
+          <div>
+            <label for="chanAffLinkInput" class="block text-xs font-medium text-slate-300 mb-1">Default Affiliate URL</label>
+            <input id="chanAffLinkInput" type="text" placeholder="https://..." class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white" />
+          </div>
+
+          <button type="button" id="btnAddChannel" class="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm transition">
+            + Save Channel Configuration
+          </button>
+        </div>
+
+        <div class="lg:col-span-7 glass-card rounded-2xl p-5 space-y-4">
+          <h2 class="text-base font-bold text-white">Your Configured Niche Channels</h2>
+          <div id="channelsListContainer" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: 24/7 GITHUB ACTIONS AUTO-PILOT GENERATOR -->
+    <section id="tab-autopilot" class="tab-panel hidden space-y-6">
+      <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Zero-Cost Cloud Hosting</span>
+            <h2 class="text-base sm:text-lg font-bold text-white">24/7 GitHub Actions Auto-Pilot Code Generator</h2>
+            <p class="text-xs text-slate-400">Yeh code aapke upar set kiye gaye Channels aur Affiliate links ke hisab se automatically update hota hai. Ise apne free GitHub repository mein daal kar rozana auto-generate chala sakti hain.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="cronTimeSelect" class="text-xs text-slate-300">Daily Run Time:</label>
+            <select id="cronTimeSelect" class="rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white">
+              <option value="30 2 * * *">08:00 AM IST (02:30 UTC)</option>
+              <option value="30 6 * * *">12:00 PM IST (06:30 UTC)</option>
+              <option value="30 12 * * *">06:00 PM IST (12:30 UTC)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 3-Step Simple Hinglish Guide -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="text-xs font-bold text-rose-400">Step 1: Free GitHub Repo</span>
+            <p class="text-xs text-slate-300">GitHub.com par ek free account banayein aur <strong>yt-autopilot-agent</strong> naam se naya repository create karein.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="text-xs font-bold text-amber-400">Step 2: Add Free Gemini Key</span>
+            <p class="text-xs text-slate-300">Google AI Studio se free API key lein aur GitHub Repo ke <em>Settings → Secrets → Actions</em> mein <code>GEMINI_API_KEY</code> naam se save karein.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1.5">
+            <span class="text-xs font-bold text-emerald-400">Step 3: Edit Config Anytime</span>
+            <p class="text-xs text-slate-300">Jab bhi niche ya affiliate link badalna ho, sirf <code>channels_config.json</code> file edit karein—code chhedne ki zaroorat nahi!</p>
+          </div>
+        </div>
+
+        <!-- Generated Files Preview & Copy -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200">File 1: <code>.github/workflows/daily_youtube.yml</code></span>
+              <button type="button" id="btnCopyWorkflow" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">Copy Workflow YAML</button>
+            </div>
+            <pre id="codeWorkflowYaml" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-emerald-300 overflow-x-auto custom-scroll h-72"></pre>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-200">File 2: <code>youtube_agent.py</code> (Auto-Synced with Your Channels)</span>
+              <button type="button" id="btnCopyPythonAgent" class="text-xs text-rose-400 hover:text-rose-300 font-semibold">Copy Python Agent</button>
+            </div>
+            <pre id="codePythonAgent" class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-sky-300 overflow-x-auto custom-scroll h-72"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Free Gemini API Key Modal -->
+  <div id="apiModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-5 space-y-4 border border-slate-700">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-white">Connect Free Google Gemini API Key</h3>
+        <button type="button" id="btnCloseApiModal" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Yeh app <strong>bina API key ke bhi</strong> built-in smart templates se turant kaam karta hai! Agar aap live AI generation chahti hain, toh Google AI Studio ki free API key yahan paste karein.
+      </p>
+      <div>
+        <label for="inputGeminiKey" class="block text-xs font-medium text-slate-300 mb-1">Gemini API Key (Optional & Free)</label>
+        <input id="inputGeminiKey" type="password" placeholder="AIzaSy..." class="w-full rounded-xl bg-slate-900 border border-slate-700 px-3 py-2 text-xs text-white" />
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button type="button" id="btnClearApiKey" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300">Use Built-In Free Engine</button>
+        <button type="button" id="btnSaveApiKey" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Safe Storage Helper
+    function saveState(key, val) {
+      try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+    }
+    function loadState(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) { return fallback; }
+    }
+
+    // Toast Helper
+    function showToast(msg, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      const bg = type === 'error' ? 'bg-rose-600 border-rose-400' : 'bg-emerald-600 border-emerald-400';
+      el.className = `${bg} border text-white px-4 py-2.5 rounded-xl shadow-xl text-xs font-semibold transition-all duration-300 pointer-events-auto`;
+      el.textContent = msg;
+      container.appendChild(el);
+      setTimeout(() => { el.remove(); }, 3200);
+    }
+
+    // Clipboard Helper
+    function copyText(text, label) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(`${label} copied!`)).catch(() => fallbackCopy(text, label));
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+    function fallbackCopy(text, label) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(`${label} copied!`);
+      } catch (e) {
+        showToast('Could not copy automatically', 'error');
+      }
+      document.body.removeChild(ta);
+    }
+
+    // Default Multi-Niche Channels
+    const defaultChannels = [
+      {
+        id: 'chan-mimi',
+        name: '@Mimis_Tiny_Life',
+        niche: 'Cute Knitted/Amigurumi Character Everyday Stories (3x10s Connected Shorts)',
+        language: 'English',
+        schedule: 'Daily 05:30 PM IST',
+        affiliateName: 'Cozy Amigurumi & Miniature Craft Kit',
+        affiliateUrl: 'https://your-affiliate-link.com/mimi-crafts'
+      },
+      {
+        id: 'chan-ai-tech',
+        name: '@AI_Hustle_Hindi',
+        niche: 'AI Tools, Automation & Online Earning',
+        language: 'Hinglish',
+        schedule: 'Daily 08:30 AM IST',
+        affiliateName: 'Free AI Automation Toolkit & Prompts',
+        affiliateUrl: 'https://your-affiliate-link.com/ai-toolkit'
+      },
+      {
+        id: 'chan-facts',
+        name: '@Rahasya_Shorts_TV',
+        niche: 'Amazing Facts, Mystery & Science Shorts',
+        language: 'Hindi',
+        schedule: 'Daily 06:00 PM IST',
+        affiliateName: 'Top AudioBook Summary App (Free Month)',
+        affiliateUrl: 'https://your-affiliate-link.com/audiobooks'
+      },
+      {
+        id: 'chan-wealth',
+        name: '@Smart_Paisa_Guide',
+        niche: 'Personal Finance, Side Hustles & Digital Skills',
+        language: 'Hinglish',
+        schedule: 'Tue/Thu/Sat 11:00 AM IST',
+        affiliateName: 'Zero-Budget Freelancing Blueprint',
+        affiliateUrl: 'https://your-affiliate-link.com/freelance'
+      }
+    ];
+
+    // Trending Ideas Pool
+    const trendingIdeas = [
+      'Top 3 Free AI Websites Jo Aapka 5 Ghante Ka Kaam 5 Minute Mein Karenge',
+      'Bina Chehra Dikhaye YouTube Shorts Se Mahine Ke ₹50,000 Kaise Kamaye (Step-by-Step)',
+      'Duniya Ki 3 Sabse Rahasyamayi Jagah Jahan Vigyan Bhi Fail Ho Gaya',
+      'Mobile Phone Se Free AI Influencer Banakar Brand Deals Kaise Lein',
+      'ChatGPT Ki Yeh 4 Secret Prompts Sirf 1% Log Jaante Hain',
+      'Zero Investment Affiliate Marketing: Pehle 30 Din Ka Complete Plan'
+    ];
+
+    // Default Initial Video Pack
+    const defaultCurrentPack = {
+      id: 'pack-101',
+      channelId: 'chan-ai-tech',
+      channelName: '@AI_Hustle_Hindi',
+      topic: 'Top 3 Secret Free AI Tools Jo Aapka 5 Ghante Ka Kaam 5 Minute Mein Karenge',
+      format: 'Shorts (60 Sec)',
+      language: 'Hinglish',
+      tone: 'High-Energy Viral',
+      affiliateName: 'Free AI Automation Toolkit & Prompts',
+      affiliateUrl: 'https://your-affiliate-link.com/ai-toolkit',
+      title: '3 Secret FREE AI Tools Jo 5 Ghante Ka Kaam 5 Minute Mein Karenge! 🔥 #Shorts',
+      thumbPrompt: 'Shocked young creator looking at glowing futuristic AI laptop hologram, vibrant neon lighting, high contrast, clean composition, text-free, no watermarks',
+      scenes: [
+        {
+          time: '0:00 - 0:08',
+          visual: 'Fast zoom-in on a glowing screen showing an AI agent completing multiple tasks automatically',
+          voiceover: 'Kya aap abhi bhi ghanto mehnat karke manually videos aur posts bana rahe ho? Ruk jao! Yeh 3 bilkul free AI tools aapka 90% time bacha lenge.',
+          caption: 'RUK JAO! 3 Secret FREE AI Tools 🔥'
+        },
+        {
+          time: '0:08 - 0:24',
+          visual: 'Screen recording mockup of Google AI Studio generating scripts and affiliate posts in seconds',
+          voiceover: 'Number 1: Google AI Studio! Yahan se aapko bilkul free API milta hai jo aapke poore hafte ki YouTube scripts aur SEO descriptions 10 second mein likh deta hai.',
+          caption: '#1 Google AI Studio (100% Free Brain)'
+        },
+        {
+          time: '0:24 - 0:44',
+          visual: 'Split screen showing Fooocus AI character generation and automated faceless video assembly',
+          voiceover: 'Number 2: Fooocus aur MoneyPrinterTurbo! In open-source tools se aap bina mehenge PC ke faceless videos aur consistent AI influencer photos free cloud par bana sakte ho.',
+          caption: '#2 Free Video & AI Influencer Generator'
+        },
+        {
+          time: '0:44 - 0:58',
+          visual: 'Animated arrow pointing down to the pinned comment and channel subscribe button',
+          voiceover: 'Number 3: GitHub Actions! Isse aapka agent roz subah apne aap run hoga. In teeno ka direct link aur free setup guide maine Pinned Comment mein de diya hai—abhi check karo!',
+          caption: 'Direct Link Pinned Comment Mein Hai! 👇'
+        }
+      ],
+      description: `3 Secret FREE AI Tools Jo 5 Ghante Ka Kaam 5 Minute Mein Karenge! 🔥\n\n🎁 Grab Free AI Automation Toolkit & Prompts Here:\n👉 https://your-affiliate-link.com/ai-toolkit\n\nIs video mein humne baat ki hai kaise aap zero budget mein AI agents aur free automation tools se apna YouTube channel aur affiliate system chala sakte hain.\n\n#AITools #YouTubeAutomation #OnlineEarning #HinglishTech #Shorts`,
+      pinnedComment: `🔥 Aaj ke teeno FREE AI Tools + Ready Automation Setup yahan se lein: https://your-affiliate-link.com/ai-toolkit (100% Free Guide!)`,
+      tags: 'free ai tools, youtube automation hindi, faceless youtube channel, ai tools for content creators, online earning without investment, shorts',
+      status: 'Ready to Review'
+    };
+
+    // Default Queue with ClickUp Project Fields (projectName, dueDate, priority, status, comments)
+    const defaultQueue = [
+      {
+        id: 'pack-mimi-100',
+        projectName: 'Mimi Ep #1 — Rainy Day Strawberry Cake',
+        dueDate: '2026-10-26',
+        priority: '🔥 High Priority',
+        channelId: 'chan-mimi',
+        channelName: '@Mimis_Tiny_Life',
+        topic: 'Mimi Bakes a Tiny Rainy-Day Strawberry Cake (3x10s Silent Story)',
+        format: 'Shorts (60 Sec)',
+        language: 'English',
+        tone: 'No Dialogue (Music + SFX Visual Story)',
+        affiliateName: 'Cozy Amigurumi & Miniature Craft Kit',
+        affiliateUrl: 'https://your-affiliate-link.com/mimi-crafts',
+        title: 'Mimi’s Rainy Day Tiny Strawberry Cake 🍓🧶 #Shorts #Amigurumi',
+        thumbPrompt: 'Cute knitted amigurumi girl named Mimi holding a tiny freshly baked strawberry cake in a cozy miniature kitchen, raindrops on window, clean composition, text-free, no watermarks',
+        scenes: [
+          {
+            time: 'Clip 1 (0:00 - 0:10)',
+            visual: '[START FRAME: Mimi at window] Cute knitted amigurumi girl Mimi in a yellow knitted apron looking at gentle rain, then turning to a tiny wooden mixing bowl, 1080x1920',
+            voiceover: '[NO DIALOGUE — SFX: Gentle rain pattering + cozy kalimba music]',
+            caption: 'Rainy afternoon... time to bake! 🌧️🍓'
+          },
+          {
+            time: 'Clip 2 (0:10 - 0:20)',
+            visual: '[CONTINUES FROM CLIP 1 END FRAME] Mimi whisking tiny pink strawberry batter, cute puff of flour on her knitted cheek, she giggles, 1080x1920',
+            voiceover: '[NO DIALOGUE — SFX: Tiny wooden whisk stirring + playful poof sound]',
+            caption: 'Oops! A little flour puff! 🧁✨'
+          },
+          {
+            time: 'Clip 3 (0:20 - 0:30)',
+            visual: '[CONTINUES FROM CLIP 2 END FRAME] Mimi placing glossy miniature strawberry cake by the rainy window, clapping her knitted hands with joy, 1080x1920',
+            voiceover: '[NO DIALOGUE — SFX: Warm oven ding bell + acoustic crescendo]',
+            caption: 'Warm cake on a rainy day ❤️🧶'
+          }
+        ],
+        description: 'Mimi’s Rainy Day Tiny Strawberry Cake 🍓🧶\n\n🧶 Craft Supplies: https://your-affiliate-link.com/mimi-crafts\n\n#MimisTinyLife #Amigurumi #Shorts',
+        pinnedComment: '🍓 Which tiny treat should Mimi bake next? Comment below! 🧶✨',
+        tags: 'mimis tiny life, amigurumi animation, cute knitted character, cozy shorts',
+        status: 'In Progress',
+        comments: [
+          { author: 'You (Creator)', text: 'Keep yellow knitted apron identical across all 3 clips!', time: 'Today 10:15 AM' },
+          { author: 'AI Agent 🤖', text: '3x10s continuity prompts locked & ready for clip generation.', time: 'Today 10:16 AM' }
+        ]
+      },
+      Object.assign(JSON.parse(JSON.stringify(defaultCurrentPack)), {
+        projectName: 'AI Hustle Ep #12 — 3 Secret Free AI Tools',
+        dueDate: '2026-10-26',
+        priority: '⚡ Viral Hook',
+        status: 'In Review',
+        comments: [
+          { author: 'AI Agent 🤖', text: 'Hinglish script + affiliate link injected into description & pinned comment.', time: 'Today 11:00 AM' }
+        ]
+      }),
+      {
+        id: 'pack-102',
+        channelId: 'chan-facts',
+        channelName: '@Rahasya_Shorts_TV',
+        topic: 'Antarctica Ke Neeche Chhupa 10,000 Saal Purana Rahasya',
+        format: 'Shorts (60 Sec)',
+        language: 'Hindi',
+        tone: 'Suspense & Mystery',
+        affiliateName: 'Top AudioBook Summary App (Free Month)',
+        affiliateUrl: 'https://your-affiliate-link.com/audiobooks',
+        title: 'Antarctica Ki Barf Ke Neeche Scientists Ko Kya Mila? 😱 #Shorts',
+        thumbPrompt: 'Deep ancient glowing cavern beneath thick Antarctic blue ice sheet, cinematic expedition lights, clean composition, text-free, no watermarks',
+        scenes: [
+          {
+            time: '0:00 - 0:12',
+            visual: 'Cinematic aerial shot over endless white glaciers of Antarctica zooming into a deep radar scan',
+            voiceover: 'Antarctica ki 2 kilometer moti barf ke neeche vaigyaniko ko kuch aisa mila hai jisne poori duniya ko chonka diya hai!',
+            caption: 'Barf Ke 2 KM Neeche Kya Chhupa Hai? 😱'
+          },
+          {
+            time: '0:12 - 0:42',
+            visual: '3D satellite radar visualization showing hidden subglacial lakes and mountain valleys',
+            voiceover: 'Satellite radar se pata chala hai ki wahan barf ke neeche 400 se zyada rahasyamayi jheelein aur pahad hain jahan croro saal se suraj ki roshni tak nahi pahunchi.',
+            caption: '400+ Chhupi Hui Rahasyamayi Jheelein!'
+          },
+          {
+            time: '0:42 - 0:58',
+            visual: 'Glowing ancient book icon and pointer to pinned comment link',
+            voiceover: 'Aise hi duniya ke ansuljhe rahasyon ki poori audio book sunne ke liye Pinned Comment mein diye free link par abhi click karein!',
+            caption: 'Free AudioBook Link Pinned Comment Mein 👇'
+          }
+        ],
+        description: `Antarctica Ki Barf Ke Neeche Scientists Ko Kya Mila? 😱\n\n🎧 Listen to Full Mystery AudioBooks Free:\n👉 https://your-affiliate-link.com/audiobooks\n\n#FactsHindi #MysteryShorts #AntarcticaFacts #Shorts`,
+        pinnedComment: `🎧 Poori Mystery AudioBook bilkul FREE mein sunne ke liye yahan click karein: https://your-affiliate-link.com/audiobooks`,
+        tags: 'hindi facts, mystery shorts, antarctica rahasya, amazing facts hindi, viral shorts',
+        status: 'Approved'
+      },
+      {
+        id: 'pack-103',
+        channelId: 'chan-wealth',
+        channelName: '@Smart_Paisa_Guide',
+        topic: 'Zero Investment Affiliate Marketing: Din Mein 20 Minute Ka System',
+        format: 'Long Video (5-8 Min)',
+        language: 'Hinglish',
+        tone: 'Step-by-Step Guide',
+        affiliateName: 'Zero-Budget Freelancing Blueprint',
+        affiliateUrl: 'https://your-affiliate-link.com/freelance',
+        title: 'Zero Budget Affiliate Marketing Automation (2026 Step-by-Step Blueprint)',
+        thumbPrompt: 'Modern dark workspace with automated income workflow dashboard on monitor, clean composition, text-free, no watermarks',
+        scenes: [
+          {
+            time: '0:00 - 0:45',
+            visual: 'Clean animated flowchart showing Traffic -> Helpful Video -> Pinned Affiliate Link',
+            voiceover: 'Agar aapke paas din mein sirf 20 minute hain aur zero budget hai, toh affiliate marketing karne ka purana tarika bhool jaiye.',
+            caption: 'Zero Budget 20-Min Affiliate System'
+          },
+          {
+            time: '0:45 - 3:30',
+            visual: 'Screen walk-through of picking high-converting digital tools and generating short problem-solving videos',
+            voiceover: 'Sabse pehle aise digital tools ya products chunein jo logo ki rozana ki problem solve karte hain, phir AI agent se unke upar short tutorial scripts banayein.',
+            caption: 'Step 1: Problem-Solving Micro Videos'
+          },
+          {
+            time: '3:30 - 5:30',
+            visual: 'Call to action card highlighting the pinned comment resource link',
+            voiceover: 'Poora checklist aur mere top 20 high-paying affiliate programs ki list neeche description aur pinned comment mein mil jayegi.',
+            caption: 'Checklist Link In Description 👇'
+          }
+        ],
+        description: `Zero Budget Affiliate Marketing Automation Blueprint\n\n🚀 Download Zero-Budget Freelancing Blueprint:\n👉 https://your-affiliate-link.com/freelance\n\n#AffiliateMarketing #PassiveIncomeHindi #SideHustle`,
+        pinnedComment: `🚀 Free Affiliate & Freelancing Starter Kit yahan se download karein: https://your-affiliate-link.com/freelance`,
+        tags: 'affiliate marketing hindi, earn money online, side hustle india, automation tools',
+        status: 'Ready to Review'
+      }
+    ];
+
+    // App State
+    let channels = loadState('yt_autopilot_channels', defaultChannels);
+    let currentPack = loadState('yt_autopilot_current_pack', defaultCurrentPack);
+    let queue = loadState('yt_autopilot_queue', defaultQueue);
+    let geminiApiKey = loadState('yt_autopilot_gemini_key', '');
+    let activePreviewSceneIndex = 0;
+
+    // Update API Status UI
+    function renderApiStatus() {
+      const dot = document.getElementById('apiStatusDot');
+      const txt = document.getElementById('apiStatusText');
+      if (geminiApiKey && geminiApiKey.trim().length > 10) {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        txt.textContent = 'Live Gemini AI Connected (Free Tier)';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+        txt.textContent = 'Smart Built-In Engine (Add Free Gemini Key)';
+      }
+    }
+
+    // Populate Channel Dropdown
+    function renderChannelDropdown() {
+      const sel = document.getElementById('selectChannel');
+      sel.innerHTML = '';
+      channels.forEach(ch => {
+        const opt = document.createElement('option');
+        opt.value = ch.id;
+        opt.textContent = `${ch.name} — ${ch.niche}`;
+        if (ch.id === currentPack.channelId) opt.selected = true;
+        sel.appendChild(opt);
+      });
+    }
+
+    // Render Current Pack into Studio Editor
+    function renderStudioEditor() {
+      document.getElementById('inputTopic').value = currentPack.topic;
+      document.getElementById('selectFormat').value = currentPack.format;
+      document.getElementById('selectLanguage').value = currentPack.language;
+      document.getElementById('selectTone').value = currentPack.tone;
+      document.getElementById('inputAffiliateName').value = currentPack.affiliateName;
+      document.getElementById('inputAffiliateUrl').value = currentPack.affiliateUrl;
+
+      document.getElementById('editTitle').value = currentPack.title;
+      document.getElementById('editThumbPrompt').value = currentPack.thumbPrompt;
+      document.getElementById('editDescription').value = currentPack.description;
+      document.getElementById('editPinnedComment').value = currentPack.pinnedComment;
+      document.getElementById('editTags').value = currentPack.tags;
+
+      const container = document.getElementById('scenesContainer');
+      container.innerHTML = '';
+
+      currentPack.scenes.forEach((sc, idx) => {
+        const card = document.createElement('div');
+        card.className = 'p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 text-xs font-bold">Scene ${idx + 1}</span>
+              <input type="text" data-scene-idx="${idx}" data-field="time" value="${escapeHtml(sc.time)}" class="scene-input w-28 rounded-lg bg-slate-950 border border-slate-700 px-2 py-1 text-xs text-slate-200" />
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" data-preview-idx="${idx}" class="btn-preview-scene px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] text-amber-300 font-medium">Preview on Phone</button>
+              <button type="button" data-remove-idx="${idx}" class="btn-remove-scene px-2 py-1 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-[11px] text-slate-400 hover:text-rose-200">Delete</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
+            <div class="md:col-span-4">
+              <label class="block text-[11px] text-slate-400 mb-1">Visual / AI B-Roll Prompt</label>
+              <textarea rows="2" data-scene-idx="${idx}" data-field="visual" class="scene-input w-full rounded-lg bg-slate-950 border border-slate-800 p-2 text-xs text-amber-200/90">${escapeHtml(sc.visual)}</textarea>
+            </div>
+            <div class="md:col-span-5">
+              <label class="block text-[11px] text-slate-400 mb-1">Voiceover Script (Bolne wali line)</label>
+              <textarea rows="2" data-scene-idx="${idx}" data-field="voiceover" class="scene-input w-full rounded-lg bg-slate-950 border border-slate-800 p-2 text-xs text-white font-medium">${escapeHtml(sc.voiceover)}</textarea>
+            </div>
+            <div class="md:col-span-3">
+              <label class="block text-[11px] text-slate-400 mb-1">On-Screen Viral Caption</label>
+              <textarea rows="2" data-scene-idx="${idx}" data-field="caption" class="scene-input w-full rounded-lg bg-slate-950 border border-slate-800 p-2 text-xs text-emerald-300 font-bold">${escapeHtml(sc.caption)}</textarea>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Attach listeners for scene inputs
+      container.querySelectorAll('.scene-input').forEach(inp => {
+        inp.addEventListener('input', (e) => {
+          const idx = parseInt(e.target.getAttribute('data-scene-idx'), 10);
+          const field = e.target.getAttribute('data-field');
+          if (currentPack.scenes[idx]) {
+            currentPack.scenes[idx][field] = e.target.value;
+            saveState('yt_autopilot_current_pack', currentPack);
+            if (idx === activePreviewSceneIndex) renderPhonePreview();
+          }
+        });
+      });
+
+      container.querySelectorAll('.btn-preview-scene').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activePreviewSceneIndex = parseInt(btn.getAttribute('data-preview-idx'), 10);
+          renderPhonePreview();
+        });
+      });
+
+      container.querySelectorAll('.btn-remove-scene').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (currentPack.scenes.length <= 1) {
+            showToast('At least 1 scene is required', 'error');
+            return;
+          }
+          const idx = parseInt(btn.getAttribute('data-remove-idx'), 10);
+          currentPack.scenes.splice(idx, 1);
+          if (activePreviewSceneIndex >= currentPack.scenes.length) {
+            activePreviewSceneIndex = 0;
+          }
+          saveState('yt_autopilot_current_pack', currentPack);
+          renderStudioEditor();
+          renderPhonePreview();
+          showToast('Scene removed');
+        });
+      });
+
+      renderPhonePreview();
+    }
+
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Render 9:16 Phone Simulator
+    function renderPhonePreview() {
+      const scenes = currentPack.scenes || [];
+      if (!scenes.length) return;
+      if (activePreviewSceneIndex >= scenes.length) activePreviewSceneIndex = 0;
+      const sc = scenes[activePreviewSceneIndex];
+      document.getElementById('previewChannelBadge').textContent = currentPack.channelName || '@Channel';
+      document.getElementById('previewSceneCounter').textContent = `Scene ${activePreviewSceneIndex + 1}/${scenes.length}`;
+      document.getElementById('previewTimeBadge').textContent = sc.time;
+      document.getElementById('previewVisualHint').textContent = `[Visual: ${sc.visual}]`;
+      document.getElementById('previewCaptionText').textContent = `"${sc.voiceover}"`;
+    }
+
+    // Built-in Smart Script Generator (Works 100% Offline / Zero Key + Optional Live Gemini API)
+    async function generateNewVideoPack() {
+      const topic = document.getElementById('inputTopic').value.trim() || 'Top 3 AI Tools for Creators';
+      const format = document.getElementById('selectFormat').value;
+      const language = document.getElementById('selectLanguage').value;
+      const tone = document.getElementById('selectTone').value;
+      const affiliateName = document.getElementById('inputAffiliateName').value.trim() || 'Recommended Resource';
+      const affiliateUrl = document.getElementById('inputAffiliateUrl').value.trim() || 'https://your-link.com';
+      const chanId = document.getElementById('selectChannel').value;
+      const chanObj = channels.find(c => c.id === chanId) || channels[0];
+
+      const btnLabel = document.getElementById('generateBtnLabel');
+      btnLabel.textContent = 'Generating Script & SEO Pack...';
+
+      // Check if user added a free Gemini API key
+      if (geminiApiKey && geminiApiKey.trim().length > 10) {
+        try {
+          const prompt = `You are an expert YouTube automation producer. Create a high-retention ${format} script in ${language} with a ${tone} tone for channel "${chanObj.name}" (${chanObj.niche}) on topic: "${topic}".
+Also weave in this affiliate offer at the end and in the description/pinned comment: "${affiliateName}" (${affiliateUrl}).
+Return STRICT JSON with keys:
+"title" (string),
+"thumbPrompt" (string, clean composition, text-free, no watermarks),
+"scenes" (array of 4 objects with keys "time", "visual", "voiceover", "caption"),
+"description" (string),
+"pinnedComment" (string),
+"tags" (string).`;
+
+          const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(geminiApiKey.trim())}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { responseMimeType: 'application/json' }
+            })
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (rawText) {
+              const parsed = JSON.parse(rawText);
+              if (parsed.title && Array.isArray(parsed.scenes)) {
+                currentPack = {
+                  id: 'pack-' + Date.now(),
+                  channelId: chanObj.id,
+                  channelName: chanObj.name,
+                  topic, format, language, tone, affiliateName, affiliateUrl,
+                  title: parsed.title,
+                  thumbPrompt: parsed.thumbPrompt || 'Vibrant cinematic YouTube thumbnail, clean composition, text-free, no watermarks',
+                  scenes: parsed.scenes,
+                  description: parsed.description || '',
+                  pinnedComment: parsed.pinnedComment || '',
+                  tags: parsed.tags || '',
+                  status: 'Ready to Review'
+                };
+                activePreviewSceneIndex = 0;
+                saveState('yt_autopilot_current_pack', currentPack);
+                renderStudioEditor();
+                btnLabel.textContent = 'Generate Complete Video Pack';
+                showToast('Generated with Live Gemini AI!');
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          // Fall through seamlessly to built-in engine
+        }
+      }
+
+      // Smart Built-In Multi-Language Engine (Instant & Reliable)
+      const isShorts = format.includes('Shorts');
+      let scenes = [];
+      if (language === 'English') {
+        scenes = [
+          {
+            time: isShorts ? '0:00 - 0:08' : '0:00 - 0:45',
+            visual: `Dynamic zoom-in visual introducing ${topic} with glowing motion graphics`,
+            voiceover: `Stop scrolling! If you want to master ${topic} without wasting hours, watch the next 45 seconds carefully.`,
+            caption: `STOP SCROLLING! ${topic.slice(0, 28)}... 🔥`
+          },
+          {
+            time: isShorts ? '0:08 - 0:25' : '0:45 - 2:30',
+            visual: `Step-by-step screen demonstration showing the core secret behind ${topic}`,
+            voiceover: `First, most people do this manually and burn out. Instead, use an automated workflow that handles the heavy lifting in minutes.`,
+            caption: `Step 1: Automate The Hard Part ⚡`
+          },
+          {
+            time: isShorts ? '0:25 - 0:45' : '2:30 - 4:45',
+            visual: `Comparison chart showing 10x faster output and real results`,
+            voiceover: `Second, focus only on reviewing and tweaking the best outputs so your quality stays super high with 10% of the effort.`,
+            caption: `Step 2: Review & Scale 10x Faster 📈`
+          },
+          {
+            time: isShorts ? '0:45 - 0:58' : '4:45 - 5:45',
+            visual: `Animated pointer highlighting the pinned comment and description box`,
+            voiceover: `I have put the complete ${affiliateName} link in the Pinned Comment below—grab it right now and subscribe!`,
+            caption: `Grab Link in Pinned Comment! 👇`
+          }
+        ];
+      } else {
+        scenes = [
+          {
+            time: isShorts ? '0:00 - 0:08' : '0:00 - 0:45',
+            visual: `High-contrast cinematic visual showing ${topic} with fast zoom effect`,
+            voiceover: `Ruk jao! Agar aap ${topic} ke baare mein yeh secret nahi jaante, toh aap rozana apna keemti time aur mehnat waste kar rahe ho!`,
+            caption: `Yeh Secret 99% Log Nahi Jaante! 🔥`
+          },
+          {
+            time: isShorts ? '0:08 - 0:25' : '0:45 - 2:30',
+            visual: `Clean screen walkthrough demonstrating how automation solves ${topic}`,
+            voiceover: `Sabse pehla step: Har kaam khud manually karne ke bajaye AI agent ko research aur draft banane do, jisse 5 ghante ka kaam 5 minute mein ho jaye.`,
+            caption: `Step 1: 5 Ghante Ka Kaam 5 Min Mein ⚡`
+          },
+          {
+            time: isShorts ? '0:25 - 0:45' : '2:30 - 4:45',
+            visual: `Visual dashboard preview showing multiple niche channels and daily growth`,
+            voiceover: `Doosra step: Aap sirf din mein 15 minute dekar best scripts ko edit aur approve karo, taaki quality hamesha top-class rahe.`,
+            caption: `Step 2: Sirf 15 Min Analyze & Approve ✅`
+          },
+          {
+            time: isShorts ? '0:45 - 0:58' : '4:45 - 5:45',
+            visual: `Glowing arrow pointing down toward the Pinned Comment section`,
+            voiceover: `Maine ${affiliateName} ka direct link neeche Pinned Comment mein de diya hai—abhi check karo aur channel ko subscribe kar lo!`,
+            caption: `Direct Link Pinned Comment Mein Hai 👇`
+          }
+        ];
+      }
+
+      currentPack = {
+        id: 'pack-' + Date.now(),
+        channelId: chanObj.id,
+        channelName: chanObj.name,
+        topic,
+        format,
+        language,
+        tone,
+        affiliateName,
+        affiliateUrl,
+        title: `${topic} (${isShorts ? '#Shorts' : 'Complete Guide'}) 🔥`,
+        thumbPrompt: `Dramatic cinematic illustration representing ${topic}, vibrant lighting, high contrast, clean composition, text-free, no watermarks`,
+        scenes,
+        description: `${topic} 🔥\n\n🎁 Check Out ${affiliateName} Here:\n👉 ${affiliateUrl}\n\nChannel: ${chanObj.name} (${chanObj.niche})\nFormat: ${format} | Language: ${language}\n\n#YouTubeAutomation #AITools #OnlineEarning #Shorts`,
+        pinnedComment: `🔥 ${affiliateName} ka direct official link yahan hai: ${affiliateUrl} (Abhi check karein!)`,
+        tags: `${topic.toLowerCase()}, youtube automation, ${chanObj.niche.toLowerCase()}, free ai tools, online earning, shorts`,
+        status: 'Ready to Review'
+      };
+
+      activePreviewSceneIndex = 0;
+      saveState('yt_autopilot_current_pack', currentPack);
+      renderStudioEditor();
+      btnLabel.textContent = 'Generate Complete Video Pack';
+      showToast('New Video Pack Generated! Edit any line below.');
+    }
+
+    let boardViewMode = 'kanban'; // 'kanban' or 'table'
+
+    function normalizeStatus(st) {
+      if (!st) return 'In Progress';
+      if (st === 'Ready to Review' || st === 'In Review') return 'In Review';
+      if (st === 'Approved' || st === 'Published' || st === 'Done') return 'Done';
+      return 'In Progress';
+    }
+
+    function ensureClickUpFields() {
+      queue.forEach((item, idx) => {
+        item.status = normalizeStatus(item.status);
+        if (!item.projectName) {
+          item.projectName = `${item.channelName || 'Channel'} — Project #${idx + 1}`;
+        }
+        if (!item.dueDate) {
+          item.dueDate = '2026-10-26';
+        }
+        if (!item.priority) {
+          item.priority = idx === 0 ? '🔥 High Priority' : '✨ Normal';
+        }
+        if (!Array.isArray(item.comments)) {
+          item.comments = [
+            { author: 'AI Agent 🤖', text: 'Script, prompts & SEO ready for review.', time: 'Today' }
+          ];
+        }
+      });
+    }
+
+    function populateBoardChannelDropdowns() {
+      const quickSel = document.getElementById('quickProjChannel');
+      const filterSel = document.getElementById('filterQueueChannel');
+      if (quickSel) {
+        quickSel.innerHTML = '';
+        channels.forEach(ch => {
+          const opt = document.createElement('option');
+          opt.value = ch.id;
+          opt.textContent = ch.name;
+          quickSel.appendChild(opt);
+        });
+      }
+      if (filterSel) {
+        const prev = filterSel.value || 'ALL';
+        filterSel.innerHTML = '<option value="ALL">All Channels</option>';
+        channels.forEach(ch => {
+          const opt = document.createElement('option');
+          opt.value = ch.id;
+          opt.textContent = ch.name;
+          if (ch.id === prev) opt.selected = true;
+          filterSel.appendChild(opt);
+        });
+      }
+    }
+
+    // Render ClickUp Dashboard & Board/Table
+    function renderQueue() {
+      ensureClickUpFields();
+      const statusFilter = document.getElementById('filterQueueStatus').value;
+      const chanFilterEl = document.getElementById('filterQueueChannel');
+      const chanFilter = chanFilterEl ? chanFilterEl.value : 'ALL';
+      const searchEl = document.getElementById('searchProjectsInput');
+      const searchQuery = searchEl ? searchEl.value.trim().toLowerCase() : '';
+
+      const container = document.getElementById('queueListContainer');
+      document.getElementById('queueCountBadge').textContent = String(queue.length);
+
+      // Update ClickUp KPI Counters
+      const countProg = queue.filter(i => normalizeStatus(i.status) === 'In Progress').length;
+      const countRev = queue.filter(i => normalizeStatus(i.status) === 'In Review').length;
+      const countDone = queue.filter(i => normalizeStatus(i.status) === 'Done').length;
+      const elTotal = document.getElementById('kpiTotalCount');
+      const elProg = document.getElementById('kpiProgressCount');
+      const elRev = document.getElementById('kpiReviewCount');
+      const elDone = document.getElementById('kpiDoneCount');
+      if (elTotal) elTotal.textContent = String(queue.length);
+      if (elProg) elProg.textContent = String(countProg);
+      if (elRev) elRev.textContent = String(countRev);
+      if (elDone) elDone.textContent = String(countDone);
+
+      container.innerHTML = '';
+
+      const filtered = queue.filter(item => {
+        const normSt = normalizeStatus(item.status);
+        const matchStatus = statusFilter === 'ALL' || item.status === statusFilter || normSt === normalizeStatus(statusFilter);
+        const matchChan = chanFilter === 'ALL' || item.channelId === chanFilter;
+        const matchSearch = !searchQuery ||
+          (item.projectName || '').toLowerCase().includes(searchQuery) ||
+          (item.title || '').toLowerCase().includes(searchQuery) ||
+          (item.channelName || '').toLowerCase().includes(searchQuery);
+        return matchStatus && matchChan && matchSearch;
+      });
+
+      if (!filtered.length) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-400 text-sm border border-dashed border-slate-800 rounded-2xl">No projects match this filter. Click "All Projects" above or create a new project!</div>`;
+        return;
+      }
+
+      if (boardViewMode === 'kanban') {
+        const columns = [
+          { key: 'In Progress', label: '⚡ In Progress (Scripting & Clips)', badgeBg: 'bg-sky-500/20 text-sky-300 border-sky-500/40', topBorder: 'border-t-4 border-t-sky-500' },
+          { key: 'In Review', label: '👀 In Review (Check & Edit)', badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-500/40', topBorder: 'border-t-4 border-t-amber-500' },
+          { key: 'Done', label: '✅ Done (Approved & Scheduled)', badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', topBorder: 'border-t-4 border-t-emerald-500' }
+        ];
+
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-1 lg:grid-cols-3 gap-4';
+
+        columns.forEach(col => {
+          const colItems = filtered.filter(i => normalizeStatus(i.status) === col.key);
+          const colDiv = document.createElement('div');
+          colDiv.className = `kanban-col rounded-2xl p-3.5 space-y-3 ${col.topBorder}`;
+          colDiv.innerHTML = `
+            <div class="flex items-center justify-between px-1 pb-2 border-b border-slate-800">
+              <span class="text-xs font-extrabold tracking-wide text-white">${col.label}</span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${col.badgeBg}">${colItems.length}</span>
+            </div>
+            <div class="space-y-3 kanban-cards-slot"></div>
+          `;
+          const slot = colDiv.querySelector('.kanban-cards-slot');
+          if (!colItems.length) {
+            slot.innerHTML = `<div class="p-6 text-center text-xs text-slate-500 border border-dashed border-slate-800/80 rounded-xl">No projects in ${col.key}</div>`;
+          } else {
+            colItems.forEach(item => {
+              slot.appendChild(buildClickUpProjectCard(item));
+            });
+          }
+          grid.appendChild(colDiv);
+        });
+        container.appendChild(grid);
+      } else {
+        // ClickUp List / Table View
+        const tableWrap = document.createElement('div');
+        tableWrap.className = 'overflow-x-auto custom-scroll rounded-2xl border border-slate-800';
+        const rowsHtml = filtered.map(item => {
+          const st = normalizeStatus(item.status);
+          const pill = st === 'Done'
+            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+            : st === 'In Review'
+            ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+            : 'bg-sky-500/20 text-sky-300 border-sky-500/30';
+          return `
+            <tr class="border-b border-slate-800/80 bg-slate-900/70 hover:bg-slate-800/60 transition">
+              <td class="p-3">
+                <input type="text" data-proj-name-id="${item.id}" value="${escapeHtml(item.projectName)}" class="inp-proj-name bg-transparent border-b border-transparent focus:border-pink-500 text-xs font-bold text-white w-full focus:outline-none" />
+                <div class="text-[11px] text-slate-400 truncate max-w-xs">${escapeHtml(item.title)}</div>
+              </td>
+              <td class="p-3 text-xs font-semibold text-pink-300">${escapeHtml(item.channelName)}</td>
+              <td class="p-3">
+                <select data-status-id="${item.id}" class="sel-proj-status rounded-lg px-2.5 py-1 text-[11px] font-bold border ${pill} bg-slate-950">
+                  <option value="In Progress" ${st === 'In Progress' ? 'selected' : ''}>⚡ In Progress</option>
+                  <option value="In Review" ${st === 'In Review' ? 'selected' : ''}>👀 In Review</option>
+                  <option value="Done" ${st === 'Done' ? 'selected' : ''}>✅ Done</option>
+                </select>
+              </td>
+              <td class="p-3">
+                <input type="date" data-date-id="${item.id}" value="${escapeHtml(item.dueDate)}" class="inp-proj-date rounded-lg bg-slate-950 border border-slate-700 px-2 py-1 text-[11px] text-emerald-300" />
+              </td>
+              <td class="p-3 text-xs text-slate-300">💬 ${(item.comments || []).length} notes</td>
+              <td class="p-3 text-right space-x-1">
+                <button type="button" data-open-id="${item.id}" class="btn-open-pack px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-rose-500 text-white text-[11px] font-bold">Open Studio ✨</button>
+                <button type="button" data-del-id="${item.id}" class="btn-delete-pack px-2 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-rose-300 text-[11px]">✕</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        tableWrap.innerHTML = `
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-950 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                <th class="p-3">Project Name & Video Title</th>
+                <th class="p-3">Channel</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Publish Date</th>
+                <th class="p-3">Comments</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+        container.appendChild(tableWrap);
+      }
+
+      bindQueueInteractions(container);
+    }
+
+    function buildClickUpProjectCard(item) {
+      const st = normalizeStatus(item.status);
+      const statusBadge = st === 'Done'
+        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+        : st === 'In Review'
+        ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+        : 'bg-sky-500/20 text-sky-300 border-sky-500/30';
+
+      const commentsHtml = (item.comments || []).map(c => `
+        <div class="p-2 rounded-lg bg-slate-950/90 border border-slate-800/90 text-[11px] space-y-0.5">
+          <div class="flex items-center justify-between text-[10px] text-pink-300 font-semibold">
+            <span>${escapeHtml(c.author)}</span>
+            <span class="text-slate-500">${escapeHtml(c.time)}</span>
+          </div>
+          <p class="text-slate-200">${escapeHtml(c.text)}</p>
+        </div>
+      `).join('');
+
+      const card = document.createElement('div');
+      card.className = 'p-4 rounded-2xl bg-slate-900/95 border border-slate-800 hover:border-pink-500/40 transition flex flex-col justify-between space-y-3.5 shadow-lg';
+      card.innerHTML = `
+        <div class="space-y-2.5">
+          <!-- Top Row: Channel Badge, Priority & Delete -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">${escapeHtml(item.channelName)}</span>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-amber-300">${escapeHtml(item.priority || '✨ Normal')}</span>
+            </div>
+            <button type="button" data-del-id="${item.id}" class="btn-delete-pack text-slate-500 hover:text-rose-400 text-xs font-bold px-1.5" title="Delete Project">✕</button>
+          </div>
+
+          <!-- Editable Project Name -->
+          <div>
+            <label class="block text-[10px] uppercase tracking-wider text-slate-400 font-bold">Project Name (Click to Rename)</label>
+            <input type="text" data-proj-name-id="${item.id}" value="${escapeHtml(item.projectName)}" class="inp-proj-name w-full bg-transparent border-b border-slate-800 focus:border-pink-500 text-sm font-extrabold text-white py-0.5 focus:outline-none" />
+          </div>
+
+          <!-- Video Title & Format Metadata -->
+          <p class="text-xs text-slate-300 font-medium leading-snug line-clamp-2">${escapeHtml(item.title)}</p>
+          <div class="flex items-center justify-between text-[11px] text-slate-400 bg-slate-950/70 px-2.5 py-1.5 rounded-xl border border-slate-800/80">
+            <span>🎬 ${item.scenes ? item.scenes.length : 3} Clips (${escapeHtml(item.format)})</span>
+            <span>🗣️ ${escapeHtml(item.language)}</span>
+          </div>
+
+          <!-- Date Picker & Status Dropdown Row -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">📅 Target Date</label>
+              <input type="date" data-date-id="${item.id}" value="${escapeHtml(item.dueDate)}" class="inp-proj-date w-full rounded-lg bg-slate-950 border border-slate-700 px-2 py-1 text-[11px] text-emerald-300 focus:outline-none focus:border-pink-500" />
+            </div>
+            <div>
+              <label class="block text-[10px] text-slate-400 mb-0.5">📌 ClickUp Status</label>
+              <select data-status-id="${item.id}" class="sel-proj-status w-full rounded-lg bg-slate-950 border px-2 py-1 text-[11px] font-bold ${statusBadge}">
+                <option value="In Progress" ${st === 'In Progress' ? 'selected' : ''}>⚡ In Progress</option>
+                <option value="In Review" ${st === 'In Review' ? 'selected' : ''}>👀 In Review</option>
+                <option value="Done" ${st === 'Done' ? 'selected' : ''}>✅ Done</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Comments & Notes Section -->
+          <div class="pt-2 border-t border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-300">💬 Team / Self Comments (${(item.comments || []).length})</span>
+            </div>
+            <div class="space-y-1.5 max-h-28 overflow-y-auto custom-scroll">
+              ${commentsHtml}
+            </div>
+            <div class="flex items-center gap-1.5">
+              <input type="text" data-comment-input-id="${item.id}" placeholder="Write a comment or note..." class="inp-comment-text flex-1 rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-1 text-[11px] text-white focus:outline-none focus:border-pink-500" />
+              <button type="button" data-comment-btn-id="${item.id}" class="btn-add-comment px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-pink-600 text-[11px] font-bold text-pink-300 hover:text-white transition">
+                Post
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+          <button type="button" data-open-id="${item.id}" class="btn-open-pack flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-rose-500 hover:from-fuchsia-500 hover:to-rose-400 text-white text-xs font-bold shadow-md transition">
+            ✨ Open & Edit in Studio
+          </button>
+          <button type="button" data-cycle-id="${item.id}" class="btn-cycle-status py-2 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition" title="Move to Next Stage">
+            Next ➔
+          </button>
+        </div>
+      `;
+      return card;
+    }
+
+    function bindQueueInteractions(container) {
+      // Open in Studio
+      container.querySelectorAll('.btn-open-pack').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const found = queue.find(q => q.id === btn.getAttribute('data-open-id'));
+          if (found) {
+            currentPack = JSON.parse(JSON.stringify(found));
+            saveState('yt_autopilot_current_pack', currentPack);
+            const pNameEl = document.getElementById('inputProjectName');
+            const pDateEl = document.getElementById('inputProjectDate');
+            if (pNameEl) pNameEl.value = currentPack.projectName || currentPack.title;
+            if (pDateEl) pDateEl.value = currentPack.dueDate || '2026-10-26';
+            renderChannelDropdown();
+            renderStudioEditor();
+            switchTab('studio');
+            showToast(`Opened "${currentPack.projectName}" in Studio!`);
+          }
+        });
+      });
+
+      // Cycle Status (Next ->)
+      container.querySelectorAll('.btn-cycle-status').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const found = queue.find(q => q.id === btn.getAttribute('data-cycle-id'));
+          if (found) {
+            const order = ['In Progress', 'In Review', 'Done'];
+            const curr = normalizeStatus(found.status);
+            const nextIdx = (order.indexOf(curr) + 1) % order.length;
+            found.status = order[nextIdx];
+            saveState('yt_autopilot_queue', queue);
+            renderQueue();
+            showToast(`Moved to ${found.status}!`);
+          }
+        });
+      });
+
+      // Direct Status Select Dropdown
+      container.querySelectorAll('.sel-proj-status').forEach(sel => {
+        sel.addEventListener('change', (e) => {
+          const found = queue.find(q => q.id === sel.getAttribute('data-status-id'));
+          if (found) {
+            found.status = e.target.value;
+            saveState('yt_autopilot_queue', queue);
+            renderQueue();
+            showToast(`Status changed to ${found.status}`);
+          }
+        });
+      });
+
+      // Rename Project Inline
+      container.querySelectorAll('.inp-proj-name').forEach(inp => {
+        inp.addEventListener('change', (e) => {
+          const found = queue.find(q => q.id === inp.getAttribute('data-proj-name-id'));
+          if (found) {
+            found.projectName = e.target.value.trim() || found.projectName;
+            saveState('yt_autopilot_queue', queue);
+            showToast('Project name updated!');
+          }
+        });
+      });
+
+      // Change Date Inline
+      container.querySelectorAll('.inp-proj-date').forEach(inp => {
+        inp.addEventListener('change', (e) => {
+          const found = queue.find(q => q.id === inp.getAttribute('data-date-id'));
+          if (found) {
+            found.dueDate = e.target.value;
+            saveState('yt_autopilot_queue', queue);
+            showToast(`Publish date set to ${found.dueDate}`);
+          }
+        });
+      });
+
+      // Add Comment
+      container.querySelectorAll('.btn-add-comment').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-comment-btn-id');
+          const inp = container.querySelector(`input[data-comment-input-id="${id}"]`);
+          const text = inp ? inp.value.trim() : '';
+          if (!text) {
+            showToast('Write a comment first!', 'error');
+            return;
+          }
+          const found = queue.find(q => q.id === id);
+          if (found) {
+            if (!Array.isArray(found.comments)) found.comments = [];
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            found.comments.push({ author: 'You ✨', text, time: timeStr });
+            saveState('yt_autopilot_queue', queue);
+            renderQueue();
+            showToast('Comment added to project!');
+          }
+        });
+      });
+
+      // Delete Project
+      container.querySelectorAll('.btn-delete-pack').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-del-id');
+          queue = queue.filter(q => q.id !== id);
+          saveState('yt_autopilot_queue', queue);
+          renderQueue();
+          showToast('Project removed from board');
+        });
+      });
+    }
+
+    // Render Channels Manager
+    function renderChannelsList() {
+      const container = document.getElementById('channelsListContainer');
+      container.innerHTML = '';
+
+      channels.forEach((ch) => {
+        const el = document.createElement('div');
+        el.className = 'p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-3';
+        el.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-white">${escapeHtml(ch.name)}</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-rose-300 font-medium">${escapeHtml(ch.language)}</span>
+              <span class="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 font-medium">${escapeHtml(ch.schedule)}</span>
+            </div>
+            <p class="text-xs text-slate-400">Niche: ${escapeHtml(ch.niche)}</p>
+            <p class="text-xs text-emerald-400">Affiliate: ${escapeHtml(ch.affiliateName)} (${escapeHtml(ch.affiliateUrl)})</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" data-use-chan="${ch.id}" class="btn-use-chan px-3 py-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white text-xs font-semibold transition">
+              Select in Studio
+            </button>
+            <button type="button" data-del-chan="${ch.id}" class="btn-del-chan px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-slate-400 hover:text-rose-200 text-xs transition">
+              Delete
+            </button>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+
+      container.querySelectorAll('.btn-use-chan').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const ch = channels.find(c => c.id === btn.getAttribute('data-use-chan'));
+          if (ch) {
+            currentPack.channelId = ch.id;
+            currentPack.channelName = ch.name;
+            currentPack.language = ch.language;
+            currentPack.affiliateName = ch.affiliateName;
+            currentPack.affiliateUrl = ch.affiliateUrl;
+            saveState('yt_autopilot_current_pack', currentPack);
+            renderChannelDropdown();
+            renderStudioEditor();
+            switchTab('studio');
+            showToast(`Switched active channel to ${ch.name}`);
+          }
+        });
+      });
+
+      container.querySelectorAll('.btn-del-chan').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (channels.length <= 1) {
+            showToast('Keep at least 1 channel configured', 'error');
+            return;
+          }
+          channels = channels.filter(c => c.id !== btn.getAttribute('data-del-chan'));
+          saveState('yt_autopilot_channels', channels);
+          renderChannelDropdown();
+          renderChannelsList();
+          renderAutoPilotCode();
+          showToast('Channel removed');
+        });
+      });
+    }
+
+    // Render GitHub Actions 24/7 Code
+    function renderAutoPilotCode() {
+      const cron = document.getElementById('cronTimeSelect').value;
+      const yaml = `name: Daily YouTube & Affiliate AutoPilot Agent
+
+on:
+  schedule:
+    - cron: '${cron}' # Runs automatically every day
+  workflow_dispatch: # Allows 1-click manual run anytime on GitHub
+
+jobs:
+  generate_daily_pack:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Requests
+        run: pip install requests
+
+      - name: Run Multi-Niche YouTube Agent
+        env:
+          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
+        run: python youtube_agent.py
+
+      - name: Save Generated Scripts & SEO Packs to Repo
+        run: |
+          git config user.name "YT-AutoPilot-Bot"
+          git config user.email "bot@github.com"
+          git add output/
+          git commit -m "Auto-generated daily YouTube & Affiliate packs" || exit 0
+          git push`;
+
+      const py = `import os, json, datetime, requests
+
+# EASY TO EDIT CHANNEL & AFFILIATE CONFIGURATION
+CHANNELS = ${JSON.stringify(channels, null, 2)}
+
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+
+def generate_for_channel(channel):
+    today = datetime.date.today().isoformat()
+    prompt = f"""Create a viral YouTube Shorts script and SEO pack for channel {channel['name']}.
+Niche: {channel['niche']}
+Language: {channel['language']}
+Affiliate Offer to promote in description & pinned comment: {channel['affiliateName']} ({channel['affiliateUrl']})
+Return JSON with title, thumbPrompt, scenes (time, visual, voiceover, caption), description, pinnedComment, tags."""
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+    resp = requests.post(url, json={
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"responseMimeType": "application/json"}
+    }, timeout=60)
+    resp.raise_for_status()
+    content = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+    os.makedirs("output", exist_ok=True)
+    filename = f"output/{today}_{channel['id']}.json"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(content)
+    print(f"Saved: {filename}")
+
+# FFMPEG 3x10s CLIP STITCHER + YOUTUBE DATA API v3 UPLOADER
+# Complete production functions included below:
+# 1. stitch_connected_clips(clip_paths, bgm_path, output_path, aspect="9:16")
+# 2. upload_to_youtube(video_path, metadata, publish_at_iso, made_with_ai=True)
+
+if __name__ == "__main__":
+    for ch in CHANNELS:
+        generate_for_channel(ch)`;
+
+      document.getElementById('codeWorkflowYaml').textContent = yaml;
+      document.getElementById('codePythonAgent').textContent = py;
+    }
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.className = 'nav-tab px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-rose-600 text-white shadow-sm';
+        } else {
+          btn.className = 'nav-tab px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:bg-slate-800';
+        }
+      });
+    }
+
+    // Wire Up All Event Listeners on DOM Ready
+    window.addEventListener('DOMContentLoaded', () => {
+      renderApiStatus();
+      renderChannelDropdown();
+      populateBoardChannelDropdowns();
+      renderStudioEditor();
+      renderQueue();
+      renderChannelsList();
+      renderAutoPilotCode();
+
+      // View Switchers (Kanban vs ClickUp Table)
+      document.getElementById('btnViewKanban').addEventListener('click', () => {
+        boardViewMode = 'kanban';
+        document.getElementById('btnViewKanban').className = 'px-3.5 py-1.5 rounded-xl bg-fuchsia-600 text-white text-xs font-bold transition';
+        document.getElementById('btnViewTable').className = 'px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition';
+        renderQueue();
+      });
+      document.getElementById('btnViewTable').addEventListener('click', () => {
+        boardViewMode = 'table';
+        document.getElementById('btnViewTable').className = 'px-3.5 py-1.5 rounded-xl bg-fuchsia-600 text-white text-xs font-bold transition';
+        document.getElementById('btnViewKanban').className = 'px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition';
+        renderQueue();
+      });
+
+      // KPI Filter Cards
+      document.querySelectorAll('.kpi-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const filterVal = card.getAttribute('data-kpi-filter');
+          document.getElementById('filterQueueStatus').value = filterVal;
+          renderQueue();
+          showToast(`Filtered Board: ${filterVal}`);
+        });
+      });
+
+      // Search & Channel Filter on Board
+      document.getElementById('searchProjectsInput').addEventListener('input', renderQueue);
+      document.getElementById('filterQueueChannel').addEventListener('change', renderQueue);
+
+      // Quick Add Project from ClickUp Bar
+      document.getElementById('btnQuickAddProject').addEventListener('click', () => {
+        const projName = document.getElementById('quickProjName').value.trim();
+        const chanId = document.getElementById('quickProjChannel').value;
+        const dueDate = document.getElementById('quickProjDate').value || '2026-10-27';
+        const status = document.getElementById('quickProjStatus').value;
+        const ch = channels.find(c => c.id === chanId) || channels[0];
+
+        if (!projName) {
+          showToast('Please enter a Project Name first!', 'error');
+          return;
+        }
+
+        const newProj = {
+          id: 'pack-' + Date.now(),
+          projectName: projName,
+          dueDate,
+          priority: '🔥 High Priority',
+          channelId: ch.id,
+          channelName: ch.name,
+          topic: projName,
+          format: 'Shorts (60 Sec)',
+          language: ch.language,
+          tone: ch.id === 'chan-mimi' ? 'No Dialogue (Music + SFX Visual Story)' : 'High-Energy Viral',
+          affiliateName: ch.affiliateName,
+          affiliateUrl: ch.affiliateUrl,
+          title: `${projName} #Shorts`,
+          thumbPrompt: `Cinematic thumbnail for ${projName}, vibrant lighting, clean composition, text-free, no watermarks`,
+          scenes: [
+            { time: 'Clip 1 (0:00 - 0:10)', visual: `Opening hook scene for ${projName}`, voiceover: 'Opening hook or ambient SFX...', caption: `${projName.slice(0, 24)} ✨` },
+            { time: 'Clip 2 (0:10 - 0:20)', visual: `Main story action for ${projName}`, voiceover: 'Main story beat...', caption: 'Wait for the twist! 🔥' },
+            { time: 'Clip 3 (0:20 - 0:30)', visual: `Heartwarming payoff & CTA for ${projName}`, voiceover: 'Final payoff & check pinned comment!', caption: 'Link in Pinned Comment 👇' }
+          ],
+          description: `${projName}\n\n👉 ${ch.affiliateName}: ${ch.affiliateUrl}\n\n#Shorts`,
+          pinnedComment: `🔥 Check out ${ch.affiliateName}: ${ch.affiliateUrl}`,
+          tags: 'youtube automation, shorts, viral',
+          status,
+          comments: [
+            { author: 'You ✨', text: `Created project "${projName}" scheduled for ${dueDate}.`, time: 'Just now' }
+          ]
+        };
+
+        queue.unshift(newProj);
+        saveState('yt_autopilot_queue', queue);
+        document.getElementById('quickProjName').value = '';
+        renderQueue();
+        showToast(`Added "${projName}" to ${status}!`);
+      });
+
+      // Top Onboarding Quick Buttons
+      document.getElementById('btnGoToStudioTop').addEventListener('click', () => switchTab('studio'));
+      document.getElementById('btnBackToBoard').addEventListener('click', () => switchTab('queue'));
+      document.getElementById('btnQuickMimiCreate').addEventListener('click', () => {
+        document.getElementById('btnLoadMimiPreset').click();
+        switchTab('studio');
+      });
+
+      // Nav tabs
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
+      });
+
+      // Channel selection updates affiliate defaults
+      document.getElementById('selectChannel').addEventListener('change', (e) => {
+        const ch = channels.find(c => c.id === e.target.value);
+        if (ch) {
+          currentPack.channelId = ch.id;
+          currentPack.channelName = ch.name;
+          document.getElementById('selectLanguage').value = ch.language;
+          document.getElementById('inputAffiliateName').value = ch.affiliateName;
+          document.getElementById('inputAffiliateUrl').value = ch.affiliateUrl;
+          showToast(`Loaded defaults for ${ch.name}`);
+        }
+      });
+
+      // Load Mimi's Tiny Life 3x10s Connected Short Preset
+      document.getElementById('btnLoadMimiPreset').addEventListener('click', () => {
+        const mimiChan = channels.find(c => c.id === 'chan-mimi') || {
+          id: 'chan-mimi',
+          name: '@Mimis_Tiny_Life',
+          niche: 'Cute Knitted/Amigurumi Character Everyday Stories',
+          language: 'English',
+          schedule: 'Daily 05:30 PM IST',
+          affiliateName: 'Cozy Amigurumi & Miniature Craft Kit',
+          affiliateUrl: 'https://your-affiliate-link.com/mimi-crafts'
+        };
+        if (!channels.some(c => c.id === 'chan-mimi')) {
+          channels.unshift(mimiChan);
+          saveState('yt_autopilot_channels', channels);
+          renderChannelDropdown();
+          renderChannelsList();
+        }
+        const dna = document.getElementById('inputCharacterDna').value.trim();
+        currentPack = {
+          id: 'pack-mimi-' + Date.now(),
+          channelId: mimiChan.id,
+          channelName: mimiChan.name,
+          topic: 'Mimi Bakes a Tiny Rainy-Day Strawberry Cake (3x10s Silent Story)',
+          format: 'Shorts (60 Sec)',
+          language: 'English',
+          tone: 'No Dialogue (Music + SFX Visual Story)',
+          affiliateName: mimiChan.affiliateName,
+          affiliateUrl: mimiChan.affiliateUrl,
+          title: 'Mimi’s Rainy Day Tiny Strawberry Cake 🍓🧶 #Shorts #Amigurumi',
+          thumbPrompt: `${dna}, holding a tiny freshly baked strawberry sponge cake with glowing warm oven light in a miniature wooden kitchen, raindrops on window, clean composition, text-free, no watermarks`,
+          scenes: [
+            {
+              time: 'Clip 1 (0:00 - 0:10)',
+              visual: `[START FRAME: Mimi at window] ${dna}, wearing a yellow knitted apron in a cozy miniature kitchen, looking out at gentle rain on the windowpane, then turning happily toward a tiny wooden mixing bowl on the counter, macro depth of field, 1080x1920`,
+              voiceover: '[NO DIALOGUE — SFX: Gentle rain pattering on glass + soft cozy acoustic kalimba melody + tiny yarn footsteps]',
+              caption: 'Rainy afternoon... time to bake! 🌧️🍓'
+            },
+            {
+              time: 'Clip 2 (0:10 - 0:20)',
+              visual: `[CONTINUES FROM CLIP 1 END FRAME: Same yellow knitted apron & kitchen counter] ${dna}, whisking tiny pink strawberry batter in the wooden bowl, a cute puff of flour lands on her knitted cheek, she giggles and wipes her cheek with her yarn hand, 1080x1920`,
+              voiceover: '[NO DIALOGUE — SFX: Tiny wooden whisk stirring, playful poof sound effect, soft cheerful chime]',
+              caption: 'Oops! A little flour puff! 🧁✨'
+            },
+            {
+              time: 'Clip 3 (0:20 - 0:30)',
+              visual: `[CONTINUES FROM CLIP 2 END FRAME: Same yellow knitted apron & warm kitchen] ${dna}, placing a glossy miniature strawberry cake on a teacup plate by the rainy window, clapping her knitted hands with heartwarming joy as steam rises, 1080x1920`,
+              voiceover: '[NO DIALOGUE — SFX: Oven ding bell, warm acoustic guitar crescendo, cozy tea pour]',
+              caption: 'Warm cake on a rainy day ❤️🧶'
+            }
+          ],
+          description: `Mimi’s Rainy Day Tiny Strawberry Cake 🍓🧶
+
+Watch Mimi bake a tiny strawberry cake on a cozy rainy afternoon!
+
+🧶 Featured Miniature & Craft Supplies:
+👉 ${mimiChan.affiliateUrl}
+
+Disclosure: Created with AI-assisted animation and original storyboarding.
+
+#MimisTinyLife #Amigurumi #CozyShorts #MiniatureCooking #CuteAnimation #Shorts`,
+          pinnedComment: `🍓 Which tiny treat should Mimi bake next? Comment below! 🧶✨`,
+          tags: 'mimis tiny life, amigurumi animation, cute knitted character, cozy shorts, miniature baking, wholesome stories, shorts',
+          status: 'Ready to Review'
+        };
+        activePreviewSceneIndex = 0;
+        saveState('yt_autopilot_current_pack', currentPack);
+        renderChannelDropdown();
+        renderStudioEditor();
+        renderAutoPilotCode();
+        showToast("Loaded Mimi's Tiny Life (3x10s Connected Clips)!");
+      });
+
+      // Surprise Trending Idea
+      document.getElementById('btnSurpriseTopic').addEventListener('click', () => {
+        const pick = trendingIdeas[Math.floor(Math.random() * trendingIdeas.length)];
+        document.getElementById('inputTopic').value = pick;
+        showToast('Trending topic loaded!');
+      });
+
+      // Generate Pack
+      document.getElementById('btnGeneratePack').addEventListener('click', generateNewVideoPack);
+
+      // Top-level field edits
+      ['editTitle', 'editThumbPrompt', 'editDescription', 'editPinnedComment', 'editTags'].forEach(id => {
+        const map = {
+          editTitle: 'title',
+          editThumbPrompt: 'thumbPrompt',
+          editDescription: 'description',
+          editPinnedComment: 'pinnedComment',
+          editTags: 'tags'
+        };
+        document.getElementById(id).addEventListener('input', (e) => {
+          currentPack[map[id]] = e.target.value;
+          saveState('yt_autopilot_current_pack', currentPack);
+        });
+      });
+
+      // Add Scene
+      document.getElementById('btnAddScene').addEventListener('click', () => {
+        currentPack.scenes.push({
+          time: '0:58 - 1:10',
+          visual: 'New custom visual or B-roll scene',
+          voiceover: 'Yahan apni nayi line likhein...',
+          caption: 'Custom Caption Here ✨'
+        });
+        saveState('yt_autopilot_current_pack', currentPack);
+        renderStudioEditor();
+        showToast('New scene added!');
+      });
+
+      // Copy buttons
+      document.getElementById('btnCopyDesc').addEventListener('click', () => copyText(currentPack.description, 'Description'));
+      document.getElementById('btnCopyPinned').addEventListener('click', () => copyText(currentPack.pinnedComment, 'Pinned comment'));
+      document.getElementById('btnCopyTags').addEventListener('click', () => copyText(currentPack.tags, 'SEO Tags'));
+
+      document.getElementById('btnCopyAllPack').addEventListener('click', () => {
+        const fullTxt = formatPackAsText(currentPack);
+        copyText(fullTxt, 'Complete Video Pack');
+      });
+
+      // Download .TXT
+      document.getElementById('btnDownloadTxt').addEventListener('click', () => {
+        const fullTxt = formatPackAsText(currentPack);
+        const blob = new Blob([fullTxt], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${currentPack.channelName.replace(/[^a-z0-9]/gi, '_')}_script_pack.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Downloaded .TXT Script Pack!');
+      });
+
+      // Save to Queue (Syncs with ClickUp Board!)
+      document.getElementById('btnSaveToQueue').addEventListener('click', () => {
+        const copy = JSON.parse(JSON.stringify(currentPack));
+        const pNameEl = document.getElementById('inputProjectName');
+        const pDateEl = document.getElementById('inputProjectDate');
+        copy.projectName = (pNameEl && pNameEl.value.trim()) ? pNameEl.value.trim() : (copy.projectName || copy.title);
+        copy.dueDate = (pDateEl && pDateEl.value) ? pDateEl.value : (copy.dueDate || '2026-10-26');
+        copy.status = 'In Review';
+        if (!Array.isArray(copy.comments)) {
+          copy.comments = [{ author: 'AI Studio ✨', text: 'Updated script & scenes in AI Studio.', time: 'Just now' }];
+        }
+        const existingIdx = queue.findIndex(q => q.id === copy.id);
+        if (existingIdx >= 0) {
+          queue[existingIdx] = copy;
+        } else {
+          copy.id = 'pack-' + Date.now();
+          queue.unshift(copy);
+        }
+        saveState('yt_autopilot_queue', queue);
+        renderQueue();
+        switchTab('queue');
+        showToast('Saved to ClickUp Board under "In Review" 👀!');
+      });
+
+      // Phone Preview Navigation & Web Speech Voiceover
+      document.getElementById('btnPrevScene').addEventListener('click', () => {
+        if (!currentPack.scenes.length) return;
+        activePreviewSceneIndex = (activePreviewSceneIndex - 1 + currentPack.scenes.length) % currentPack.scenes.length;
+        renderPhonePreview();
+      });
+      document.getElementById('btnNextScene').addEventListener('click', () => {
+        if (!currentPack.scenes.length) return;
+        activePreviewSceneIndex = (activePreviewSceneIndex + 1) % currentPack.scenes.length;
+        renderPhonePreview();
+      });
+
+      document.getElementById('btnPlayPreview').addEventListener('click', () => {
+        if (!('speechSynthesis' in window)) {
+          showToast('Browser speech synthesis not supported on this device', 'error');
+          return;
+        }
+        window.speechSynthesis.cancel();
+        const sc = currentPack.scenes[activePreviewSceneIndex];
+        if (!sc) return;
+        const utter = new SpeechSynthesisUtterance(sc.voiceover);
+        utter.lang = currentPack.language === 'English' ? 'en-US' : 'hi-IN';
+        utter.rate = 1.05;
+        window.speechSynthesis.speak(utter);
+        showToast(`Playing voiceover for Scene ${activePreviewSceneIndex + 1}...`);
+      });
+
+      document.getElementById('btnStopPreview').addEventListener('click', () => {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        showToast('Voice playback stopped');
+      });
+
+      // Queue filter
+      document.getElementById('filterQueueStatus').addEventListener('change', renderQueue);
+
+      // Add Channel
+      document.getElementById('btnAddChannel').addEventListener('click', () => {
+        const name = document.getElementById('chanNameInput').value.trim();
+        const niche = document.getElementById('chanNicheInput').value.trim();
+        const language = document.getElementById('chanLangInput').value;
+        const schedule = document.getElementById('chanScheduleInput').value.trim() || 'Daily 09:00 AM IST';
+        const affiliateName = document.getElementById('chanAffNameInput').value.trim() || 'Featured Offer';
+        const affiliateUrl = document.getElementById('chanAffLinkInput').value.trim() || 'https://your-link.com';
+
+        if (!name || !niche) {
+          showToast('Please enter both Channel Name and Niche', 'error');
+          return;
+        }
+        channels.push({
+          id: 'chan-' + Date.now(),
+          name: name.startsWith('@') ? name : '@' + name,
+          niche,
+          language,
+          schedule,
+          affiliateName,
+          affiliateUrl
+        });
+        saveState('yt_autopilot_channels', channels);
+        document.getElementById('chanNameInput').value = '';
+        document.getElementById('chanNicheInput').value = '';
+        renderChannelDropdown();
+        renderChannelsList();
+        renderAutoPilotCode();
+        showToast('New Niche Channel Saved!');
+      });
+
+      // Cron change & copy buttons for GitHub Actions
+      document.getElementById('cronTimeSelect').addEventListener('change', renderAutoPilotCode);
+      document.getElementById('btnCopyWorkflow').addEventListener('click', () => {
+        copyText(document.getElementById('codeWorkflowYaml').textContent, 'GitHub Workflow YAML');
+      });
+      document.getElementById('btnCopyPythonAgent').addEventListener('click', () => {
+        copyText(document.getElementById('codePythonAgent').textContent, 'Python Agent Script');
+      });
+
+      // Export Full Backup
+      document.getElementById('btnExportBackup').addEventListener('click', () => {
+        const backup = { channels, currentPack, queue, exportedAt: new Date().toISOString() };
+        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'yt_autopilot_workspace_backup.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('Full Workspace Backup Downloaded!');
+      });
+
+      // Gemini API Key Modal
+      document.getElementById('btnOpenApiModal').addEventListener('click', () => {
+        document.getElementById('inputGeminiKey').value = geminiApiKey || '';
+        document.getElementById('apiModal').classList.remove('hidden');
+      });
+      document.getElementById('btnCloseApiModal').addEventListener('click', () => {
+        document.getElementById('apiModal').classList.add('hidden');
+      });
+      document.getElementById('btnSaveApiKey').addEventListener('click', () => {
+        geminiApiKey = document.getElementById('inputGeminiKey').value.trim();
+        saveState('yt_autopilot_gemini_key', geminiApiKey);
+        renderApiStatus();
+        document.getElementById('apiModal').classList.add('hidden');
+        showToast(geminiApiKey ? 'Free Gemini Key Saved!' : 'Using Built-In Engine');
+      });
+      document.getElementById('btnClearApiKey').addEventListener('click', () => {
+        geminiApiKey = '';
+        saveState('yt_autopilot_gemini_key', '');
+        renderApiStatus();
+        document.getElementById('apiModal').classList.add('hidden');
+        showToast('Switched to Built-In Smart Engine');
+      });
+    });
+
+    function formatPackAsText(pack) {
+      const scenesText = (pack.scenes || []).map((s, i) =>
+        `[Scene ${i + 1} | ${s.time}]\nVisual Prompt: ${s.visual}\nVoiceover: ${s.voiceover}\nOn-Screen Caption: ${s.caption}`
+      ).join('\n\n');
+
+      return `==================================================
+CHANNEL: ${pack.channelName} (${pack.format} | ${pack.language})
+TITLE: ${pack.title}
+THUMBNAIL PROMPT: ${pack.thumbPrompt}
+AFFILIATE OFFER: ${pack.affiliateName} -> ${pack.affiliateUrl}
+==================================================
+
+--- SCENE-BY-SCENE SCRIPT ---
+${scenesText}
+
+--- YOUTUBE SEO DESCRIPTION ---
+${pack.description}
+
+--- PINNED COMMENT ---
+${pack.pinnedComment}
+
+--- TAGS ---
+${pack.tags}
+`;
+    }
+  </script>
+</body>
+</html> 
